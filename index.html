@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoveLink 💌</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff3f8;
+      color: #49263a;
+      min-height: 100vh;
+      transition: 0.3s;
+    }
+
+    body.tema-richard {
+      background: #101014;
+      color: #ffffff;
+    }
+
+    .tela {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+    }
+
+    .logo {
+      font-size: 52px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    .subtitulo {
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 32px;
+      color: #986d85;
+    }
+
+    .tema-richard .subtitulo {
+      color: #b8b8c4;
+    }
+
+    .opcoes {
+      display: flex;
+      gap: 16px;
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .personagem {
+      flex: 1;
+      min-height: 210px;
+      border: 2px solid transparent;
+      border-radius: 24px;
+      padding: 20px 10px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform 0.2s;
+    }
+
+    .personagem:active {
+      transform: scale(0.96);
+    }
+
+    .luana {
+      background: linear-gradient(145deg, #ffe0ee, #f6b5d2);
+      color: #79284e;
+    }
+
+    .richard {
+      background: linear-gradient(145deg, #303039, #111114);
+      border-color: #454550;
+      color: #ffffff;
+    }
+
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #ffffff80;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 34px;
+    }
+
+    .richard .avatar {
+      background: #ffffff15;
+    }
+
+    .personagem h2 {
+      font-size: 21px;
+      margin-bottom: 10px;
+    }
+
+    .personagem p {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .rodape {
+      margin-top: 28px;
+      font-size: 12px;
+      color: #a58296;
+      text-align: center;
+    }
+
+    .tema-richard .rodape {
+      color: #9999a5;
+    }
+
+    .voltar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 15px;
+      border: 1px solid #e7b9d0;
+      border-radius: 12px;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .tema-richard .voltar {
+      border-color: #454550;
+    }
+
+    .mensagem {
+      text-align: center;
+      line-height: 1.8;
+      max-width: 320px;
+    }
+
+    .mensagem h2 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .mensagem p {
+      color: #986d85;
+    }
+
+    .tema-richard .mensagem p {
+      color: #b8b8c4;
+    }
+
+    @media (max-width: 340px) {
+      .opcoes {
+        flex-direction: column;
+        max-width: 260px;
+      }
+
+      .personagem {
+        min-height: 180px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="tela" id="app">
+    <div class="logo">💌</div>
+    <h1>LoveLink</h1>
+
+    <p class="subtitulo">
+      Duas perspectivas, uma história.<br>
+      Quem você quer ser?
+    </p>
+
+    <div class="opcoes">
+      <button class="personagem luana"
+        onclick="escolher('luana')">
+        <div class="avatar">🌷</div>
+        <h2>Luana</h2>
+        <p>Um mundo rosa, romântico e cheio de carinho.</p>
+      </button>
+
+      <button class="personagem richard"
+        onclick="escolher('richard')">
+        <div class="avatar">🐺</div>
+        <h2>Richard</h2>
+        <p>Um mundo preto, elegante e cheio de mistérios.</p>
+      </button>
+    </div>
+
+    <p class="rodape">♡ Sua história começa com uma escolha ♡</p>
+  </main>
+
+  <script>
+    const app = document.getElementById("app");
+
+    function escolher(personagem) {
+      const luana = personagem === "luana";
+      const nome = luana ? "Luana" : "Richard";
+      const emoji = luana ? "🌷" : "🐺";
+      const contato = luana
+        ? "Meu Lobinho 🐺❤️"
+        : "Minha Princesinha 🌷💕";
+
+      document.body.classList.toggle("tema-richard", !luana);
+
+      document.querySelector('meta[name="theme-color"]')
+        ?.setAttribute("content", luana ? "#fff3f8" : "#101014");
+
+      app.innerHTML = `
+        <button class="voltar" onclick="voltar()">← Voltar</button>
+
+        <section class="mensagem">
+          <div class="logo">${emoji}</div>
+          <h2>Olá, ${nome}! 💌</h2>
+          <p>
+            Bem-vinda ao LoveLink.<br>
+            Sua história está prestes a começar.
+          </p>
+          <p style="margin-top: 20px;">
+            Seu amor: <strong>${contato}</strong>
+          </p>
+        </section>
+      `;
+    }
+
+    function voltar() {
+      location.reload();
+    }
+  </script>
+</body>
+  </html>
+  
