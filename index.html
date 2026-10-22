@@ -4,242 +4,710 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffe5ef">
   <title>LoveLink 💌</title>
 
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    }
+
+    :root {
+      --bg: #fff5f8;
+      --panel: #ffffff;
+      --primary: #ed78a6;
+      --primary-dark: #d95187;
+      --text: #432d39;
+      --muted: #987e8b;
+      --bubble: #ffe0ec;
+      --border: #f4dce6;
+    }
+
+    body.dark {
+      --bg: #111115;
+      --panel: #1c1c23;
+      --primary: #b7a0ff;
+      --primary-dark: #9275ee;
+      --text: #f6f1ff;
+      --muted: #aaa4b8;
+      --bubble: #35303f;
+      --border: #393440;
     }
 
     body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
       font-family: Arial, sans-serif;
-      background: #fff3f8;
-      color: #49263a;
-      min-height: 100vh;
-      transition: 0.3s;
+      transition: background .2s, color .2s;
     }
 
-    body.tema-richard {
-      background: #101014;
-      color: #ffffff;
+    button, input {
+      font: inherit;
     }
 
-    .tela {
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
       min-height: 100vh;
+      margin: auto;
+      background: var(--panel);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .screen.active {
       display: flex;
       flex-direction: column;
+    }
+
+    .center {
       justify-content: center;
       align-items: center;
-      padding: 24px;
+      text-align: center;
+      padding: 28px;
+      background:
+        radial-gradient(circle at top, var(--bg), var(--panel) 70%);
     }
 
     .logo {
-      font-size: 52px;
-      margin-bottom: 10px;
+      font-size: 62px;
+      margin-bottom: 8px;
     }
 
     h1 {
-      font-size: 38px;
-      margin-bottom: 12px;
+      font-size: 34px;
+      margin: 0;
+      letter-spacing: -1px;
     }
 
-    .subtitulo {
-      text-align: center;
+    .subtitle {
+      color: var(--muted);
       line-height: 1.6;
-      margin-bottom: 32px;
-      color: #986d85;
+      margin: 12px 0 28px;
     }
 
-    .tema-richard .subtitulo {
-      color: #b8b8c4;
-    }
-
-    .opcoes {
-      display: flex;
-      gap: 16px;
+    .choice {
       width: 100%;
-      max-width: 430px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      padding: 20px;
+      border-radius: 22px;
+      margin: 7px 0;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
-    .personagem {
-      flex: 1;
-      min-height: 210px;
-      border: 2px solid transparent;
-      border-radius: 24px;
-      padding: 20px 10px;
+    .choice .emoji {
+      font-size: 35px;
+    }
+
+    .choice strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .choice small {
+      color: var(--muted);
+    }
+
+    .topbar {
+      padding: 20px 18px 16px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .toprow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .small-btn {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 9px 12px;
+    }
+
+    .greeting {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 18px 18px 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .contact {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
       cursor: pointer;
-      font-family: inherit;
-      transition: transform 0.2s;
     }
 
-    .personagem:active {
-      transform: scale(0.96);
-    }
-
-    .luana {
-      background: linear-gradient(145deg, #ffe0ee, #f6b5d2);
-      color: #79284e;
-    }
-
-    .richard {
-      background: linear-gradient(145deg, #303039, #111114);
-      border-color: #454550;
-      color: #ffffff;
+    .contact:active {
+      background: var(--bg);
     }
 
     .avatar {
-      width: 72px;
-      height: 72px;
+      width: 53px;
+      height: 53px;
+      flex-shrink: 0;
       border-radius: 50%;
-      background: #ffffff80;
+      background: var(--bubble);
+      display: grid;
+      place-items: center;
+      font-size: 27px;
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contact-name {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .preview {
+      font-size: 13px;
+      color: var(--muted);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .unread {
+      background: var(--primary);
+      color: white;
+      font-size: 12px;
+      min-width: 23px;
+      height: 23px;
+      border-radius: 50px;
+      display: grid;
+      place-items: center;
+      padding: 0 6px;
+    }
+
+    .empty {
+      margin: 20px 18px;
+      padding: 22px;
+      border: 1px dashed var(--border);
+      border-radius: 18px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .bottom-note {
+      margin-top: auto;
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .chat-header {
+      padding: 14px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      font-size: 34px;
+      gap: 12px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
     }
 
-    .richard .avatar {
-      background: #ffffff15;
-    }
-
-    .personagem h2 {
-      font-size: 21px;
-      margin-bottom: 10px;
-    }
-
-    .personagem p {
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .rodape {
-      margin-top: 28px;
-      font-size: 12px;
-      color: #a58296;
-      text-align: center;
-    }
-
-    .tema-richard .rodape {
-      color: #9999a5;
-    }
-
-    .voltar {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      padding: 10px 15px;
-      border: 1px solid #e7b9d0;
-      border-radius: 12px;
+    .back {
+      font-size: 23px;
+      border: 0;
       background: transparent;
-      color: inherit;
-      cursor: pointer;
+      color: var(--text);
+      padding: 4px;
     }
 
-    .tema-richard .voltar {
-      border-color: #454550;
+    .chat-header .avatar {
+      width: 43px;
+      height: 43px;
+      font-size: 23px;
     }
 
-    .mensagem {
+    .chat-title {
+      font-weight: bold;
+    }
+
+    .online {
+      color: #45a779;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 18px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      overflow-y: auto;
+      min-height: 250px;
+      background: var(--panel);
+    }
+
+    .date-label {
       text-align: center;
-      line-height: 1.8;
-      max-width: 320px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 8px;
     }
 
-    .mensagem h2 {
-      font-size: 28px;
-      margin-bottom: 12px;
+    .message {
+      max-width: 82%;
+      padding: 11px 13px;
+      border-radius: 17px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
     }
 
-    .mensagem p {
-      color: #986d85;
+    .message.mine {
+      align-self: flex-end;
+      background: var(--primary);
+      color: white;
+      border-bottom-right-radius: 5px;
     }
 
-    .tema-richard .mensagem p {
-      color: #b8b8c4;
+    .message.theirs {
+      align-self: flex-start;
+      background: var(--bubble);
+      color: var(--text);
+      border-bottom-left-radius: 5px;
     }
 
-    @media (max-width: 340px) {
-      .opcoes {
-        flex-direction: column;
-        max-width: 260px;
-      }
+    .time {
+      display: block;
+      font-size: 10px;
+      text-align: right;
+      margin-top: 5px;
+      opacity: .75;
+    }
 
-      .personagem {
-        min-height: 180px;
-      }
+    .composer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+
+    .composer input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      padding: 13px 15px;
+      border-radius: 25px;
+      outline: none;
+    }
+
+    .send {
+      border: 0;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .group-card {
+      margin: 12px 18px;
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      line-height: 1.6;
+    }
+
+    .primary-btn {
+      border: 0;
+      color: white;
+      background: var(--primary-dark);
+      border-radius: 15px;
+      padding: 13px 18px;
+      font-weight: bold;
+    }
+
+    .footer-actions {
+      display: flex;
+      gap: 10px;
+      padding: 16px 18px;
+    }
+
+    .footer-actions button {
+      flex: 1;
     }
   </style>
 </head>
 
 <body>
-  <main class="tela" id="app">
-    <div class="logo">💌</div>
-    <h1>LoveLink</h1>
+  <main class="app">
 
-    <p class="subtitulo">
-      Duas perspectivas, uma história.<br>
-      Quem você quer ser?
-    </p>
+    <!-- TELA INICIAL -->
+    <section id="home" class="screen active center">
+      <div class="logo">💌</div>
+      <h1>LoveLink</h1>
+      <p class="subtitle">
+        Um lugar para histórias, mensagens<br>
+        e corações conectados. ❤️
+      </p>
 
-    <div class="opcoes">
-      <button class="personagem luana"
-        onclick="escolher('luana')">
-        <div class="avatar">🌷</div>
-        <h2>Luana</h2>
-        <p>Um mundo rosa, romântico e cheio de carinho.</p>
+      <button class="choice" onclick="chooseUser('luana')">
+        <span class="emoji">🌷</span>
+        <span>
+          <strong>Entrar como Luana</strong>
+          <small>Um mundo rosa, fofo e romântico</small>
+        </span>
       </button>
 
-      <button class="personagem richard"
-        onclick="escolher('richard')">
-        <div class="avatar">🐺</div>
-        <h2>Richard</h2>
-        <p>Um mundo preto, elegante e cheio de mistérios.</p>
+      <button class="choice" onclick="chooseUser('richard')">
+        <span class="emoji">🐺</span>
+        <span>
+          <strong>Entrar como Richard</strong>
+          <small>Um mundo escuro e misterioso</small>
+        </span>
       </button>
-    </div>
 
-    <p class="rodape">♡ Sua história começa com uma escolha ♡</p>
+      <p class="subtitle" style="font-size:12px;margin-bottom:0">
+        Feito com carinho 💕
+      </p>
+    </section>
+
+    <!-- LISTA DE CONVERSAS -->
+    <section id="contacts" class="screen">
+      <header class="topbar">
+        <div class="toprow">
+          <span class="brand">LoveLink 💌</span>
+          <button class="small-btn" onclick="switchUser()">
+            Trocar perfil
+          </button>
+        </div>
+        <p class="greeting" id="greeting"></p>
+      </header>
+
+      <div class="section-title">Suas conversas</div>
+
+      <div id="contactList"></div>
+
+      <div class="section-title">Comunidades</div>
+
+      <div class="contact" onclick="openGroups()">
+        <div class="avatar">👥</div>
+        <div class="contact-info">
+          <div class="contact-name">Meus grupos</div>
+          <div class="preview">Amigos, família e histórias...</div>
+        </div>
+        <span>›</span>
+      </div>
+
+      <div class="bottom-note">
+        LoveLink • Cada mensagem aproxima dois corações 💗
+      </div>
+    </section>
+
+    <!-- CONVERSA -->
+    <section id="chat" class="screen">
+      <header class="chat-header">
+        <button class="back" onclick="showScreen('contacts')">‹</button>
+        <div class="avatar" id="chatAvatar">❤️</div>
+        <div>
+          <div class="chat-title" id="chatName"></div>
+          <div class="online">Conversa pessoal 💌</div>
+        </div>
+      </header>
+
+      <div class="messages" id="messages">
+        <div class="date-label">Suas mensagens 💕</div>
+      </div>
+
+      <form class="composer" id="messageForm">
+        <input
+          id="messageInput"
+          type="text"
+          placeholder="Escreva uma mensagem..."
+          maxlength="2000"
+          autocomplete="off"
+          required
+        >
+        <button class="send" type="submit" aria-label="Enviar">➤</button>
+      </form>
+    </section>
+
+    <!-- GRUPOS -->
+    <section id="groups" class="screen">
+      <header class="chat-header">
+        <button class="back" onclick="showScreen('contacts')">‹</button>
+        <div>
+          <div class="chat-title">Meus grupos 👥</div>
+          <div class="online">Um lugar para reunir todo mundo</div>
+        </div>
+      </header>
+
+      <div class="group-card">
+        <strong>💬 Os grupos estão chegando!</strong>
+        <p>
+          Aqui vamos criar grupos com Luana, Richard, Isabella Oliveira,
+          Amanda e outros personagens da história.
+        </p>
+        <p>Também teremos conversas especiais e acontecimentos surpresa.</p>
+      </div>
+
+      <div class="footer-actions">
+        <button class="primary-btn" onclick="showScreen('contacts')">
+          Voltar às conversas
+        </button>
+      </div>
+    </section>
+
   </main>
 
   <script>
-    const app = document.getElementById("app");
+    const STORAGE_KEY = "lovelink-messages-v1";
 
-    function escolher(personagem) {
-      const luana = personagem === "luana";
-      const nome = luana ? "Luana" : "Richard";
-      const emoji = luana ? "🌷" : "🐺";
-      const contato = luana
-        ? "Meu Lobinho 🐺❤️"
-        : "Minha Princesinha 🌷💕";
+    let currentUser = "";
+    let currentChat = "";
 
-      document.body.classList.toggle("tema-richard", !luana);
+    const characters = {
+      luana: {
+        name: "Luana",
+        partner: "Meu Lobinho 🐺❤️",
+        partnerEmoji: "🐺",
+        greeting: "Seu cantinho de carinho está esperando por você 🌷"
+      },
+      richard: {
+        name: "Richard",
+        partner: "Minha Princesinha 🌷💕",
+        partnerEmoji: "🌷",
+        greeting: "Suas conversas estão esperando por você 🖤"
+      }
+    };
 
-      document.querySelector('meta[name="theme-color"]')
-        ?.setAttribute("content", luana ? "#fff3f8" : "#101014");
+    let conversations = loadMessages();
 
-      app.innerHTML = `
-        <button class="voltar" onclick="voltar()">← Voltar</button>
-
-        <section class="mensagem">
-          <div class="logo">${emoji}</div>
-          <h2>Olá, ${nome}! 💌</h2>
-          <p>
-            Bem-vinda ao LoveLink.<br>
-            Sua história está prestes a começar.
-          </p>
-          <p style="margin-top: 20px;">
-            Seu amor: <strong>${contato}</strong>
-          </p>
-        </section>
-      `;
+    function loadMessages() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : {};
+      } catch (error) {
+        return {};
+      }
     }
 
-    function voltar() {
-      location.reload();
+    function saveMessages() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations));
+      } catch (error) {
+        alert("Não foi possível salvar neste navegador.");
+      }
+    }
+
+    function getConversationKey() {
+      return currentUser + "-" + currentChat;
+    }
+
+    function getConversation() {
+      const key = getConversationKey();
+
+      if (!conversations[key]) {
+        conversations[key] = {
+          messages: [],
+          unread: 0
+        };
+      }
+
+      return conversations[key];
+    }
+
+    function showScreen(screenId) {
+      document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+      });
+
+      document.getElementById(screenId).classList.add("active");
+    }
+
+    function chooseUser(user) {
+      currentUser = user;
+      document.body.classList.toggle("dark", user === "richard");
+
+      document.getElementById("greeting").textContent =
+        "Olá, " + characters[user].name + "! " +
+        characters[user].greeting;
+
+      showScreen("contacts");
+      renderContacts();
+    }
+
+    function switchUser() {
+      currentUser = "";
+      currentChat = "";
+      document.body.classList.remove("dark");
+      showScreen("home");
+    }
+
+    function renderContacts() {
+      const list = document.getElementById("contactList");
+      const partner = characters[currentUser];
+      const key = currentUser + "-" + partner.partner;
+
+      if (!conversations[key]) {
+        conversations[key] = {
+          messages: [],
+          unread: 0
+        };
+      }
+
+      const data = conversations[key];
+      const lastMessage = data.messages[data.messages.length - 1];
+
+      let preview = "Toque para começar uma conversa 💗";
+
+      if (lastMessage) {
+        preview = (lastMessage.from === currentUser ? "Você: " : "") +
+          lastMessage.text;
+      }
+
+      list.innerHTML = `
+        <div class="contact" onclick="openChat()">
+          <div class="avatar">${partner.partnerEmoji}</div>
+          <div class="contact-info">
+            <div class="contact-name">${partner.partner}</div>
+            <div class="preview">${escapeHTML(preview)}</div>
+          </div>
+          ${data.unread > 0
+            ? `<span class="unread">${data.unread}</span>`
+            : ""}
+        </div>
+      `;
+
+      saveMessages();
+    }
+
+    function openChat() {
+      currentChat = characters[currentUser].partner;
+
+      const data = getConversation();
+      data.unread = 0;
+      saveMessages();
+
+      document.getElementById("chatAvatar").textContent =
+        characters[currentUser].partnerEmoji;
+
+      document.getElementById("chatName").textContent = currentChat;
+
+      renderMessages();
+      showScreen("chat");
+    }
+
+    function renderMessages() {
+      const box = document.getElementById("messages");
+      const data = getConversation();
+
+      box.innerHTML = '<div class="date-label">Suas mensagens 💕</div>';
+
+      if (data.messages.length === 0) {
+        box.innerHTML += `
+          <div class="empty">
+            Essa conversa está começando agora. 💌<br>
+            Envie a primeira mensagem!
+          </div>
+        `;
+      }
+
+      data.messages.forEach(message => {
+        const bubble = document.createElement("div");
+        bubble.className =
+          "message " + (message.from === currentUser ? "mine" : "theirs");
+
+        bubble.textContent = message.text;
+
+        const time = document.createElement("span");
+        time.className = "time";
+        time.textContent = message.time;
+
+        bubble.appendChild(time);
+        box.appendChild(bubble);
+      });
+
+      box.scrollTop = box.scrollHeight;
+    }
+
+    document.getElementById("messageForm").addEventListener("submit", event => {
+      event.preventDefault();
+
+      const input = document.getElementById("messageInput");
+      const text = input.value.trim();
+
+      if (!text || !currentUser || !currentChat) return;
+
+      const data = getConversation();
+
+      data.messages.push({
+        from: currentUser,
+        text: text,
+        time: new Date().toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit"
+        })
+      });
+
+      saveMessages();
+      input.value = "";
+
+      renderMessages();
+      renderContacts();
+      input.focus();
+    });
+
+    function openGroups() {
+      showScreen("groups");
+    }
+
+    function escapeHTML(text) {
+      const element = document.createElement("span");
+      element.textContent = text;
+      return element.innerHTML;
     }
   </script>
 </body>
-  </html>
-  
+      </html>
+          
