@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10070d">
   <title>LoveLink 💌</title>
 
@@ -17,9 +17,7 @@
       --bubble: #38202f;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -27,7 +25,6 @@
       background: var(--bg);
       color: var(--text);
       font-family: Arial, sans-serif;
-      transition: background .35s, color .35s;
     }
 
     body.richard {
@@ -39,94 +36,73 @@
       --bubble: #292929;
     }
 
-    button, input {
-      font: inherit;
-    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
 
-    button {
-      cursor: pointer;
-    }
+    .screen { display: none; min-height: 100vh; }
+    .screen.active { display: flex; }
 
-    .screen {
-      display: none;
-      min-height: 100vh;
-    }
-
-    .screen.active {
-      display: flex;
-    }
-
-    /* ABERTURA */
-
+    /* CAPA: imagem inteira, sem cortar */
     #intro {
-      position: relative;
       min-height: 100vh;
+      min-height: 100dvh;
+      display: none;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 24px 18px;
-      background: #10070d;
+      background: #080509;
+    }
+
+    #intro.active { display: flex; }
+
+    .cover-wrap {
+      position: relative;
+      width: min(100vw, calc(100dvh * 2 / 3));
+      aspect-ratio: 2 / 3;
+      flex: none;
     }
 
     .cover {
-      position: absolute;
-      inset: 0;
+      display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: center;
+      object-fit: contain;
     }
 
-    #intro::after {
-      content: "";
+    .cover-error {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(8, 2, 8, .06),
-        rgba(8, 2, 8, .08) 35%,
-        rgba(8, 2, 8, .22) 60%,
-        rgba(8, 2, 8, .40)
-      );
-      pointer-events: none;
+      display: grid;
+      place-content: center;
+      padding: 20px;
+      text-align: center;
+      background: #180b15;
     }
 
-    .intro-button {
+    .cover-button {
       position: absolute;
-      z-index: 2;
-      left: 50%;
       top: 76%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      width: min(80%, 360px);
-      min-height: 58px;
+      width: 74%;
+      min-height: 48px;
       border: 2px solid #ff4f91;
-      border-radius: 50px;
+      border-radius: 40px;
       color: #fff1f7;
-      background: rgba(36, 5, 22, .78);
-      box-shadow: 0 0 22px rgba(255, 44, 125, .3);
+      background: rgba(38, 5, 23, .93);
+      box-shadow: 0 0 18px #ff28794d;
+      font-size: clamp(12px, 3.4vw, 18px);
       font-weight: bold;
-      letter-spacing: 2px;
-      transition: .2s;
-    }
-
-    .intro-button:active {
-      transform: translate(-50%, -50%) scale(.96);
-    }
-
-    .intro-button:focus-visible,
-    button:focus-visible {
-      outline: 2px solid white;
-      outline-offset: 4px;
+      letter-spacing: 1px;
+      white-space: nowrap;
     }
 
     /* ESCOLHA DE PERSONAGEM */
-
     #choose {
       align-items: center;
       justify-content: center;
-      padding: 28px 20px;
-      background:
-        radial-gradient(ellipse at top, #482035 0%, var(--bg) 65%);
+      padding: 25px 20px;
+      background: radial-gradient(ellipse at top, #482035, var(--bg) 70%);
     }
 
     .choice-content {
@@ -140,50 +116,43 @@
       font-family: Georgia, serif;
       font-size: clamp(42px, 12vw, 64px);
       margin: 0 0 8px;
-      letter-spacing: -2px;
     }
 
     .subtitle {
       color: var(--muted);
       line-height: 1.5;
-      margin: 0 0 28px;
+      margin: 0 0 24px;
     }
 
     .character-card {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 15px;
       width: 100%;
-      padding: 20px;
+      padding: 18px;
       margin: 14px 0;
       border: 1px solid #714052;
       border-radius: 20px;
       background: var(--panel);
       color: var(--text);
       text-align: left;
-      transition: transform .2s, border-color .2s;
     }
 
-    .character-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--accent);
-    }
-
-    .character-emoji {
+    .character-emoji, .avatar {
       display: grid;
       place-items: center;
-      width: 62px;
-      height: 62px;
       flex-shrink: 0;
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
-      background: #39202e;
-      font-size: 34px;
+      background: var(--bubble);
+      font-size: 30px;
     }
 
-    .character-card strong {
+    .character-card strong, .contact-info strong {
       display: block;
-      font-size: 20px;
       margin-bottom: 6px;
+      font-size: 18px;
     }
 
     .character-card small {
@@ -192,38 +161,34 @@
     }
 
     /* BOAS-VINDAS */
-
     #welcome {
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 22px;
       text-align: center;
     }
 
     .welcome-card {
       width: 100%;
       max-width: 420px;
-      padding: 32px 22px;
+      padding: 28px 20px;
       background: var(--panel);
       border: 1px solid #593044;
       border-radius: 24px;
     }
 
-    .welcome-icon {
-      font-size: 64px;
-      margin-bottom: 16px;
-    }
+    .welcome-icon { font-size: 60px; margin-bottom: 12px; }
 
     .primary, .secondary {
       width: 100%;
-      padding: 15px;
+      padding: 14px;
       margin-top: 12px;
       border-radius: 14px;
       font-weight: bold;
     }
 
     .primary {
-      color: #210b15;
+      color: #240b16;
       background: var(--accent);
       border: 0;
     }
@@ -235,31 +200,18 @@
     }
 
     /* CONTATOS */
-
-    #contacts {
-      flex-direction: column;
-      background: var(--bg);
-    }
+    #contacts { flex-direction: column; background: var(--bg); }
 
     .topbar {
-      padding: 24px 20px 18px;
+      padding: 22px 20px;
       background: var(--panel);
       border-bottom: 1px solid #34212d;
     }
 
-    .topbar h1 {
-      margin: 0 0 7px;
-      font-size: 28px;
-    }
+    .topbar h1 { margin: 0 0 7px; font-size: 28px; }
+    .topbar p { margin: 0; color: var(--muted); }
 
-    .topbar p {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .contact-list {
-      padding: 10px 14px;
-    }
+    .contact-list { padding: 10px 14px; }
 
     .section-label {
       margin: 20px 6px 10px;
@@ -272,9 +224,9 @@
     .contact {
       display: flex;
       align-items: center;
-      gap: 13px;
-      padding: 15px 10px;
+      gap: 12px;
       width: 100%;
+      padding: 14px 8px;
       color: var(--text);
       background: transparent;
       border: 0;
@@ -282,27 +234,7 @@
       text-align: left;
     }
 
-    .avatar {
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: var(--bubble);
-      font-size: 27px;
-    }
-
-    .contact-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .contact-info strong {
-      display: block;
-      margin-bottom: 6px;
-    }
-
+    .contact-info { flex: 1; min-width: 0; }
     .contact-info small {
       display: block;
       color: var(--muted);
@@ -321,11 +253,21 @@
       font-size: 11px;
     }
 
-    /* CONVERSA */
+    .notice {
+      margin: 16px 4px;
+      padding: 14px;
+      border: 1px solid #684355;
+      border-radius: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 13px;
+    }
 
+    /* CONVERSAS */
     #chat {
       flex-direction: column;
       height: 100vh;
+      height: 100dvh;
       min-height: 100vh;
     }
 
@@ -333,7 +275,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px;
+      padding: 12px;
       background: var(--panel);
       border-bottom: 1px solid #34212d;
     }
@@ -343,16 +285,11 @@
       color: var(--text);
       background: transparent;
       border: 0;
-      font-size: 22px;
+      font-size: 26px;
     }
 
-    .chat-header strong {
-      display: block;
-    }
-
-    .chat-header small {
-      color: var(--muted);
-    }
+    .chat-header strong { display: block; }
+    .chat-header small { color: var(--muted); }
 
     .messages {
       display: flex;
@@ -360,7 +297,7 @@
       flex-direction: column;
       gap: 12px;
       overflow-y: auto;
-      padding: 18px 14px;
+      padding: 16px 12px;
     }
 
     .message {
@@ -379,7 +316,7 @@
 
     .message.me {
       align-self: flex-end;
-      color: #240c16;
+      color: #240b16;
       background: var(--accent);
       border-bottom-right-radius: 5px;
     }
@@ -408,7 +345,6 @@
       background: var(--bg);
       border: 1px solid #684355;
       border-radius: 24px;
-      outline-color: var(--accent);
     }
 
     .send-button {
@@ -416,73 +352,48 @@
       border: 0;
       border-radius: 50%;
       background: var(--accent);
-      color: #210b15;
+      color: #240b16;
       font-size: 20px;
     }
 
-    .notice {
-      margin: 14px;
-      padding: 14px;
-      border: 1px solid #684355;
-      border-radius: 14px;
-      color: var(--muted);
-      line-height: 1.5;
-      font-size: 13px;
-    }
+    .hidden { display: none !important; }
 
-    .hidden {
-      display: none !important;
-    }
-
-    @media (max-height: 650px) {
-      .intro-button {
-        top: 80%;
-      }
-
-      .character-card {
-        padding: 13px;
-        margin: 10px 0;
+    @media (max-height: 600px) {
+      .cover-wrap {
+        width: min(100vw, calc(100dvh * 2 / 3));
       }
     }
   </style>
 </head>
 
 <body>
-
-  <!-- 1. CAPA DE ABERTURA -->
+  <!-- 1. CAPA -->
   <main id="intro" class="screen active">
-    <img
-      class="cover"
-      src="./capa.png"
-      alt="Capa misteriosa do LoveLink"
-      onerror="this.style.display='none'; document.getElementById('coverError').classList.remove('hidden')"
-    >
+    <div class="cover-wrap">
+      <img
+        class="cover"
+        src="./capa.png"
+        alt="Capa misteriosa do LoveLink"
+        onerror="document.getElementById('coverError').classList.remove('hidden')"
+      >
 
-    <div id="coverError" class="hidden" style="
-      position:absolute; inset:0; display:grid; place-items:center;
-      padding:24px; text-align:center; color:#fff1f7; z-index:1;
-      background:radial-gradient(ellipse at center,#482035,#10070d 75%);
-    ">
-      <div>
+      <div id="coverError" class="cover-error hidden">
         <h1 class="logo">LoveLink</h1>
-        <p>Amor, segredos e escolhas...</p>
-        <p>Não consegui carregar capa.png. Confira se a imagem está junto do index.html.</p>
+        <p>Não consegui carregar a capa.</p>
+        <p>Confira se capa.png está junto de index.html.</p>
       </div>
-    </div>
 
-    <button class="intro-button" onclick="startGame()">
-      ♥ &nbsp; INICIAR JOGO &nbsp; ♥
-    </button>
+      <button class="cover-button" onclick="startGame()">
+        ♥ &nbsp; INICIAR JOGO &nbsp; ♥
+      </button>
+    </div>
   </main>
 
-  <!-- 2. ESCOLHA DE PERSONAGEM -->
+  <!-- 2. ESCOLHA -->
   <section id="choose" class="screen">
     <div class="choice-content">
       <h1 class="logo">LoveLink</h1>
-      <p class="subtitle">
-        Duas perspectivas.<br>
-        Uma história cheia de segredos.
-      </p>
+      <p class="subtitle">Duas perspectivas.<br>Uma história cheia de segredos.</p>
 
       <button class="character-card" onclick="chooseCharacter('luana')">
         <span class="character-emoji">🌷</span>
@@ -500,9 +411,7 @@
         </span>
       </button>
 
-      <button class="secondary" onclick="showScreen('intro')">
-        Voltar à capa
-      </button>
+      <button class="secondary" onclick="showScreen('intro')">Voltar à capa</button>
     </div>
   </section>
 
@@ -512,18 +421,12 @@
       <div class="welcome-icon" id="welcomeEmoji">🌷</div>
       <h1 id="welcomeTitle">Bem-vinda ao LoveLink!</h1>
       <p class="subtitle" id="welcomeText"></p>
-
-      <button class="primary" onclick="openContacts()">
-        Entrar no LoveLink 💌
-      </button>
-
-      <button class="secondary" onclick="showScreen('choose')">
-        Trocar personagem
-      </button>
+      <button class="primary" onclick="openContacts()">Entrar no LoveLink 💌</button>
+      <button class="secondary" onclick="showScreen('choose')">Trocar personagem</button>
     </div>
   </section>
 
-  <!-- 4. LISTA DE CONTATOS -->
+  <!-- 4. CONTATOS -->
   <section id="contacts" class="screen">
     <header class="topbar">
       <h1>LoveLink <span style="color:var(--accent)">♡</span></h1>
@@ -537,7 +440,7 @@
         <span class="avatar" id="partnerAvatar">🐺</span>
         <span class="contact-info">
           <strong id="partnerName">Meu Lobinho 🐺❤️</strong>
-          <small id="partnerPreview">Toca aqui para abrir a conversa 💗</small>
+          <small id="partnerPreview">Toque para abrir a conversa 💗</small>
           <span class="badge">Conversa especial</span>
         </span>
         <span>›</span>
@@ -555,9 +458,8 @@
       </button>
 
       <div class="notice">
-        🔒 Esta é a primeira versão do LoveLink. Novos personagens,
-        grupos, notificações e a investigação serão adicionados nas próximas
-        etapas da história.
+        🔒 Esta é a primeira versão do LoveLink. Novos personagens, grupos,
+        notificações e a investigação serão adicionados nas próximas etapas.
       </div>
 
       <button class="secondary" onclick="showScreen('choose')">
@@ -566,7 +468,7 @@
     </div>
   </section>
 
-  <!-- 5. CONVERSAS INICIAIS -->
+  <!-- 5. CONVERSA -->
   <section id="chat" class="screen">
     <header class="chat-header">
       <button class="back-button" onclick="backToContacts()" aria-label="Voltar">‹</button>
@@ -622,7 +524,6 @@
       document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
       });
-
       document.getElementById(id).classList.add("active");
       window.scrollTo(0, 0);
     }
@@ -636,11 +537,9 @@
       document.body.classList.toggle("richard", character === "richard");
 
       const data = conversations[character];
-
       document.getElementById("welcomeEmoji").textContent = data.welcomeEmoji;
       document.getElementById("welcomeTitle").textContent = data.welcomeTitle;
       document.getElementById("welcomeText").textContent = data.welcomeText;
-
       document.getElementById("partnerName").textContent = data.partnerName;
       document.getElementById("partnerAvatar").textContent = data.partnerEmoji;
 
@@ -653,29 +552,16 @@
 
     function openChat(type) {
       currentChat = type;
-
       const data = conversations[currentCharacter];
       const isGroup = type === "group";
 
       document.getElementById("chatName").textContent =
         isGroup ? "Nosso grupo 👥" : data.partnerName;
-
       document.getElementById("chatAvatar").textContent =
         isGroup ? "👥" : data.partnerEmoji;
 
-      document.getElementById("messages").innerHTML = "";
-
-      addMessage(
-        isGroup ? data.groupGreeting : data.greeting,
-        false
-      );
-
-      if (!isGroup && currentCharacter === "richard") {
-        addMessage(
-          "Richard, fica atento: a investigação e as mensagens do perseguidor serão desenvolvidas nos próximos capítulos.",
-          false
-        );
-      }
+      document.getElementById("messages").replaceChildren();
+      addMessage(isGroup ? data.groupGreeting : data.greeting, false);
 
       showScreen("chat");
     }
@@ -683,7 +569,6 @@
     function addMessage(text, mine) {
       const messages = document.getElementById("messages");
       const bubble = document.createElement("div");
-
       bubble.className = "message " + (mine ? "me" : "them");
 
       const content = document.createElement("span");
@@ -707,17 +592,12 @@
 
     document.getElementById("messageForm").addEventListener("submit", function(event) {
       event.preventDefault();
-
       const input = document.getElementById("messageInput");
       const text = input.value.trim();
-
       if (!text) return;
 
       addMessage(text, true);
       input.value = "";
-
-      // Esta versão ainda não tem um serviço de IA conectado.
-      // As respostas automáticas contextuais serão adicionadas numa etapa futura.
     });
   </script>
 </body>
