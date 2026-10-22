@@ -4,34 +4,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#ffe5ef">
+  <meta name="theme-color" content="#10070d">
   <title>LoveLink 💌</title>
 
   <style>
+    :root {
+      --bg: #10070d;
+      --panel: #1c1019;
+      --accent: #ff4f91;
+      --text: #fff1f7;
+      --muted: #c7aab8;
+      --bubble: #38202f;
+    }
+
     * {
       box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #fff5f8;
-      --panel: #ffffff;
-      --primary: #ed78a6;
-      --primary-dark: #d95187;
-      --text: #432d39;
-      --muted: #987e8b;
-      --bubble: #ffe0ec;
-      --border: #f4dce6;
-    }
-
-    body.dark {
-      --bg: #111115;
-      --panel: #1c1c23;
-      --primary: #b7a0ff;
-      --primary-dark: #9275ee;
-      --text: #f6f1ff;
-      --muted: #aaa4b8;
-      --bubble: #35303f;
-      --border: #393440;
     }
 
     body {
@@ -40,7 +27,16 @@
       background: var(--bg);
       color: var(--text);
       font-family: Arial, sans-serif;
-      transition: background .2s, color .2s;
+      transition: background .35s, color .35s;
+    }
+
+    body.richard {
+      --bg: #090909;
+      --panel: #171717;
+      --accent: #dedede;
+      --text: #f5f5f5;
+      --muted: #aaa;
+      --bubble: #292929;
     }
 
     button, input {
@@ -51,16 +47,6 @@
       cursor: pointer;
     }
 
-    .app {
-      width: 100%;
-      max-width: 520px;
-      min-height: 100vh;
-      margin: auto;
-      background: var(--panel);
-      position: relative;
-      overflow: hidden;
-    }
-
     .screen {
       display: none;
       min-height: 100vh;
@@ -68,123 +54,242 @@
 
     .screen.active {
       display: flex;
-      flex-direction: column;
     }
 
-    .center {
-      justify-content: center;
+    /* ABERTURA */
+
+    #intro {
+      position: relative;
+      min-height: 100vh;
       align-items: center;
-      text-align: center;
-      padding: 28px;
+      justify-content: center;
+      overflow: hidden;
+      padding: 24px 18px;
+      background: #10070d;
+    }
+
+    .cover {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    #intro::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(8, 2, 8, .06),
+        rgba(8, 2, 8, .08) 35%,
+        rgba(8, 2, 8, .22) 60%,
+        rgba(8, 2, 8, .40)
+      );
+      pointer-events: none;
+    }
+
+    .intro-button {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 76%;
+      transform: translate(-50%, -50%);
+      width: min(80%, 360px);
+      min-height: 58px;
+      border: 2px solid #ff4f91;
+      border-radius: 50px;
+      color: #fff1f7;
+      background: rgba(36, 5, 22, .78);
+      box-shadow: 0 0 22px rgba(255, 44, 125, .3);
+      font-weight: bold;
+      letter-spacing: 2px;
+      transition: .2s;
+    }
+
+    .intro-button:active {
+      transform: translate(-50%, -50%) scale(.96);
+    }
+
+    .intro-button:focus-visible,
+    button:focus-visible {
+      outline: 2px solid white;
+      outline-offset: 4px;
+    }
+
+    /* ESCOLHA DE PERSONAGEM */
+
+    #choose {
+      align-items: center;
+      justify-content: center;
+      padding: 28px 20px;
       background:
-        radial-gradient(circle at top, var(--bg), var(--panel) 70%);
+        radial-gradient(ellipse at top, #482035 0%, var(--bg) 65%);
+    }
+
+    .choice-content {
+      width: 100%;
+      max-width: 460px;
+      text-align: center;
     }
 
     .logo {
-      font-size: 62px;
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      font-size: 34px;
-      margin: 0;
-      letter-spacing: -1px;
+      color: var(--accent);
+      font-family: Georgia, serif;
+      font-size: clamp(42px, 12vw, 64px);
+      margin: 0 0 8px;
+      letter-spacing: -2px;
     }
 
     .subtitle {
       color: var(--muted);
-      line-height: 1.6;
-      margin: 12px 0 28px;
+      line-height: 1.5;
+      margin: 0 0 28px;
     }
 
-    .choice {
+    .character-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
       width: 100%;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
       padding: 20px;
-      border-radius: 22px;
-      margin: 7px 0;
+      margin: 14px 0;
+      border: 1px solid #714052;
+      border-radius: 20px;
+      background: var(--panel);
+      color: var(--text);
       text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+      transition: transform .2s, border-color .2s;
     }
 
-    .choice .emoji {
-      font-size: 35px;
+    .character-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
     }
 
-    .choice strong {
+    .character-emoji {
+      display: grid;
+      place-items: center;
+      width: 62px;
+      height: 62px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #39202e;
+      font-size: 34px;
+    }
+
+    .character-card strong {
       display: block;
-      margin-bottom: 5px;
+      font-size: 20px;
+      margin-bottom: 6px;
     }
 
-    .choice small {
+    .character-card small {
       color: var(--muted);
+      line-height: 1.4;
     }
 
-    .topbar {
-      padding: 20px 18px 16px;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-    }
+    /* BOAS-VINDAS */
 
-    .toprow {
-      display: flex;
+    #welcome {
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
     }
 
-    .brand {
-      font-size: 25px;
+    .welcome-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 32px 22px;
+      background: var(--panel);
+      border: 1px solid #593044;
+      border-radius: 24px;
+    }
+
+    .welcome-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .primary, .secondary {
+      width: 100%;
+      padding: 15px;
+      margin-top: 12px;
+      border-radius: 14px;
       font-weight: bold;
     }
 
-    .small-btn {
-      background: var(--panel);
-      border: 1px solid var(--border);
+    .primary {
+      color: #210b15;
+      background: var(--accent);
+      border: 0;
+    }
+
+    .secondary {
       color: var(--text);
-      border-radius: 12px;
-      padding: 9px 12px;
+      background: transparent;
+      border: 1px solid #684355;
     }
 
-    .greeting {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 14px;
+    /* CONTATOS */
+
+    #contacts {
+      flex-direction: column;
+      background: var(--bg);
     }
 
-    .section-title {
-      font-size: 13px;
+    .topbar {
+      padding: 24px 20px 18px;
+      background: var(--panel);
+      border-bottom: 1px solid #34212d;
+    }
+
+    .topbar h1 {
+      margin: 0 0 7px;
+      font-size: 28px;
+    }
+
+    .topbar p {
+      margin: 0;
       color: var(--muted);
-      padding: 18px 18px 8px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    }
+
+    .contact-list {
+      padding: 10px 14px;
+    }
+
+    .section-label {
+      margin: 20px 6px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
     }
 
     .contact {
       display: flex;
-      gap: 13px;
       align-items: center;
-      padding: 16px 18px;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-    }
-
-    .contact:active {
-      background: var(--bg);
+      gap: 13px;
+      padding: 15px 10px;
+      width: 100%;
+      color: var(--text);
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid #30202a;
+      text-align: left;
     }
 
     .avatar {
-      width: 53px;
-      height: 53px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: var(--bubble);
       display: grid;
       place-items: center;
+      flex-shrink: 0;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--bubble);
       font-size: 27px;
     }
 
@@ -193,521 +298,428 @@
       min-width: 0;
     }
 
-    .contact-name {
-      font-weight: bold;
+    .contact-info strong {
+      display: block;
       margin-bottom: 6px;
     }
 
-    .preview {
-      font-size: 13px;
+    .contact-info small {
+      display: block;
       color: var(--muted);
       overflow: hidden;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .unread {
-      background: var(--primary);
-      color: white;
-      font-size: 12px;
-      min-width: 23px;
-      height: 23px;
-      border-radius: 50px;
-      display: grid;
-      place-items: center;
-      padding: 0 6px;
+    .badge {
+      display: inline-block;
+      margin-top: 7px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      color: var(--accent);
+      background: var(--bubble);
+      font-size: 11px;
     }
 
-    .empty {
-      margin: 20px 18px;
-      padding: 22px;
-      border: 1px dashed var(--border);
-      border-radius: 18px;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.6;
-    }
+    /* CONVERSA */
 
-    .bottom-note {
-      margin-top: auto;
-      padding: 18px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
+    #chat {
+      flex-direction: column;
+      height: 100vh;
+      min-height: 100vh;
     }
 
     .chat-header {
-      padding: 14px;
       display: flex;
       align-items: center;
       gap: 12px;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
+      padding: 14px;
+      background: var(--panel);
+      border-bottom: 1px solid #34212d;
     }
 
-    .back {
-      font-size: 23px;
-      border: 0;
-      background: transparent;
+    .back-button {
+      padding: 8px;
       color: var(--text);
-      padding: 4px;
+      background: transparent;
+      border: 0;
+      font-size: 22px;
     }
 
-    .chat-header .avatar {
-      width: 43px;
-      height: 43px;
-      font-size: 23px;
+    .chat-header strong {
+      display: block;
     }
 
-    .chat-title {
-      font-weight: bold;
-    }
-
-    .online {
-      color: #45a779;
-      font-size: 12px;
-      margin-top: 4px;
+    .chat-header small {
+      color: var(--muted);
     }
 
     .messages {
-      flex: 1;
-      padding: 18px 13px;
       display: flex;
+      flex: 1;
       flex-direction: column;
-      gap: 11px;
+      gap: 12px;
       overflow-y: auto;
-      min-height: 250px;
-      background: var(--panel);
-    }
-
-    .date-label {
-      text-align: center;
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 8px;
+      padding: 18px 14px;
     }
 
     .message {
       max-width: 82%;
-      padding: 11px 13px;
+      padding: 12px 14px;
       border-radius: 17px;
       line-height: 1.45;
       overflow-wrap: anywhere;
-      white-space: pre-wrap;
     }
 
-    .message.mine {
-      align-self: flex-end;
-      background: var(--primary);
-      color: white;
-      border-bottom-right-radius: 5px;
-    }
-
-    .message.theirs {
+    .message.them {
       align-self: flex-start;
       background: var(--bubble);
-      color: var(--text);
       border-bottom-left-radius: 5px;
     }
 
-    .time {
-      display: block;
-      font-size: 10px;
-      text-align: right;
-      margin-top: 5px;
-      opacity: .75;
+    .message.me {
+      align-self: flex-end;
+      color: #240c16;
+      background: var(--accent);
+      border-bottom-right-radius: 5px;
     }
 
-    .composer {
+    .message time {
+      display: block;
+      margin-top: 5px;
+      font-size: 10px;
+      opacity: .7;
+      text-align: right;
+    }
+
+    .chat-compose {
       display: flex;
-      align-items: center;
       gap: 8px;
       padding: 12px;
-      border-top: 1px solid var(--border);
-      background: var(--bg);
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      background: var(--panel);
     }
 
-    .composer input {
+    .chat-compose input {
       flex: 1;
       min-width: 0;
-      border: 1px solid var(--border);
-      background: var(--panel);
+      padding: 13px;
       color: var(--text);
-      padding: 13px 15px;
-      border-radius: 25px;
-      outline: none;
-    }
-
-    .send {
-      border: 0;
-      background: var(--primary);
-      color: white;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .group-card {
-      margin: 12px 18px;
-      padding: 18px;
-      border-radius: 18px;
       background: var(--bg);
-      border: 1px solid var(--border);
-      line-height: 1.6;
+      border: 1px solid #684355;
+      border-radius: 24px;
+      outline-color: var(--accent);
     }
 
-    .primary-btn {
+    .send-button {
+      width: 48px;
       border: 0;
-      color: white;
-      background: var(--primary-dark);
-      border-radius: 15px;
-      padding: 13px 18px;
-      font-weight: bold;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #210b15;
+      font-size: 20px;
     }
 
-    .footer-actions {
-      display: flex;
-      gap: 10px;
-      padding: 16px 18px;
+    .notice {
+      margin: 14px;
+      padding: 14px;
+      border: 1px solid #684355;
+      border-radius: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 13px;
     }
 
-    .footer-actions button {
-      flex: 1;
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-height: 650px) {
+      .intro-button {
+        top: 80%;
+      }
+
+      .character-card {
+        padding: 13px;
+        margin: 10px 0;
+      }
     }
   </style>
 </head>
 
 <body>
-  <main class="app">
 
-    <!-- TELA INICIAL -->
-    <section id="home" class="screen active center">
-      <div class="logo">💌</div>
-      <h1>LoveLink</h1>
-      <p class="subtitle">
-        Um lugar para histórias, mensagens<br>
-        e corações conectados. ❤️
-      </p>
+  <!-- 1. CAPA DE ABERTURA -->
+  <main id="intro" class="screen active">
+    <img
+      class="cover"
+      src="./capa.png"
+      alt="Capa misteriosa do LoveLink"
+      onerror="this.style.display='none'; document.getElementById('coverError').classList.remove('hidden')"
+    >
 
-      <button class="choice" onclick="chooseUser('luana')">
-        <span class="emoji">🌷</span>
-        <span>
-          <strong>Entrar como Luana</strong>
-          <small>Um mundo rosa, fofo e romântico</small>
-        </span>
-      </button>
-
-      <button class="choice" onclick="chooseUser('richard')">
-        <span class="emoji">🐺</span>
-        <span>
-          <strong>Entrar como Richard</strong>
-          <small>Um mundo escuro e misterioso</small>
-        </span>
-      </button>
-
-      <p class="subtitle" style="font-size:12px;margin-bottom:0">
-        Feito com carinho 💕
-      </p>
-    </section>
-
-    <!-- LISTA DE CONVERSAS -->
-    <section id="contacts" class="screen">
-      <header class="topbar">
-        <div class="toprow">
-          <span class="brand">LoveLink 💌</span>
-          <button class="small-btn" onclick="switchUser()">
-            Trocar perfil
-          </button>
-        </div>
-        <p class="greeting" id="greeting"></p>
-      </header>
-
-      <div class="section-title">Suas conversas</div>
-
-      <div id="contactList"></div>
-
-      <div class="section-title">Comunidades</div>
-
-      <div class="contact" onclick="openGroups()">
-        <div class="avatar">👥</div>
-        <div class="contact-info">
-          <div class="contact-name">Meus grupos</div>
-          <div class="preview">Amigos, família e histórias...</div>
-        </div>
-        <span>›</span>
+    <div id="coverError" class="hidden" style="
+      position:absolute; inset:0; display:grid; place-items:center;
+      padding:24px; text-align:center; color:#fff1f7; z-index:1;
+      background:radial-gradient(ellipse at center,#482035,#10070d 75%);
+    ">
+      <div>
+        <h1 class="logo">LoveLink</h1>
+        <p>Amor, segredos e escolhas...</p>
+        <p>Não consegui carregar capa.png. Confira se a imagem está junto do index.html.</p>
       </div>
+    </div>
 
-      <div class="bottom-note">
-        LoveLink • Cada mensagem aproxima dois corações 💗
-      </div>
-    </section>
-
-    <!-- CONVERSA -->
-    <section id="chat" class="screen">
-      <header class="chat-header">
-        <button class="back" onclick="showScreen('contacts')">‹</button>
-        <div class="avatar" id="chatAvatar">❤️</div>
-        <div>
-          <div class="chat-title" id="chatName"></div>
-          <div class="online">Conversa pessoal 💌</div>
-        </div>
-      </header>
-
-      <div class="messages" id="messages">
-        <div class="date-label">Suas mensagens 💕</div>
-      </div>
-
-      <form class="composer" id="messageForm">
-        <input
-          id="messageInput"
-          type="text"
-          placeholder="Escreva uma mensagem..."
-          maxlength="2000"
-          autocomplete="off"
-          required
-        >
-        <button class="send" type="submit" aria-label="Enviar">➤</button>
-      </form>
-    </section>
-
-    <!-- GRUPOS -->
-    <section id="groups" class="screen">
-      <header class="chat-header">
-        <button class="back" onclick="showScreen('contacts')">‹</button>
-        <div>
-          <div class="chat-title">Meus grupos 👥</div>
-          <div class="online">Um lugar para reunir todo mundo</div>
-        </div>
-      </header>
-
-      <div class="group-card">
-        <strong>💬 Os grupos estão chegando!</strong>
-        <p>
-          Aqui vamos criar grupos com Luana, Richard, Isabella Oliveira,
-          Amanda e outros personagens da história.
-        </p>
-        <p>Também teremos conversas especiais e acontecimentos surpresa.</p>
-      </div>
-
-      <div class="footer-actions">
-        <button class="primary-btn" onclick="showScreen('contacts')">
-          Voltar às conversas
-        </button>
-      </div>
-    </section>
-
+    <button class="intro-button" onclick="startGame()">
+      ♥ &nbsp; INICIAR JOGO &nbsp; ♥
+    </button>
   </main>
 
+  <!-- 2. ESCOLHA DE PERSONAGEM -->
+  <section id="choose" class="screen">
+    <div class="choice-content">
+      <h1 class="logo">LoveLink</h1>
+      <p class="subtitle">
+        Duas perspectivas.<br>
+        Uma história cheia de segredos.
+      </p>
+
+      <button class="character-card" onclick="chooseCharacter('luana')">
+        <span class="character-emoji">🌷</span>
+        <span>
+          <strong>Jogar como Luana</strong>
+          <small>Seu celular, suas conversas e os segredos que vão aparecer.</small>
+        </span>
+      </button>
+
+      <button class="character-card" onclick="chooseCharacter('richard')">
+        <span class="character-emoji">🐺</span>
+        <span>
+          <strong>Jogar como Richard</strong>
+          <small>Investigue as mensagens e descubra quem está por trás delas.</small>
+        </span>
+      </button>
+
+      <button class="secondary" onclick="showScreen('intro')">
+        Voltar à capa
+      </button>
+    </div>
+  </section>
+
+  <!-- 3. BOAS-VINDAS -->
+  <section id="welcome" class="screen">
+    <div class="welcome-card">
+      <div class="welcome-icon" id="welcomeEmoji">🌷</div>
+      <h1 id="welcomeTitle">Bem-vinda ao LoveLink!</h1>
+      <p class="subtitle" id="welcomeText"></p>
+
+      <button class="primary" onclick="openContacts()">
+        Entrar no LoveLink 💌
+      </button>
+
+      <button class="secondary" onclick="showScreen('choose')">
+        Trocar personagem
+      </button>
+    </div>
+  </section>
+
+  <!-- 4. LISTA DE CONTATOS -->
+  <section id="contacts" class="screen">
+    <header class="topbar">
+      <h1>LoveLink <span style="color:var(--accent)">♡</span></h1>
+      <p id="contactsSubtitle">Suas conversas, seus segredos.</p>
+    </header>
+
+    <div class="contact-list">
+      <p class="section-label">MENSAGENS</p>
+
+      <button class="contact" onclick="openChat('partner')">
+        <span class="avatar" id="partnerAvatar">🐺</span>
+        <span class="contact-info">
+          <strong id="partnerName">Meu Lobinho 🐺❤️</strong>
+          <small id="partnerPreview">Toca aqui para abrir a conversa 💗</small>
+          <span class="badge">Conversa especial</span>
+        </span>
+        <span>›</span>
+      </button>
+
+      <p class="section-label">GRUPOS</p>
+
+      <button class="contact" onclick="openChat('group')">
+        <span class="avatar">👥</span>
+        <span class="contact-info">
+          <strong>Nosso grupo</strong>
+          <small>Um espaço para os personagens</small>
+        </span>
+        <span>›</span>
+      </button>
+
+      <div class="notice">
+        🔒 Esta é a primeira versão do LoveLink. Novos personagens,
+        grupos, notificações e a investigação serão adicionados nas próximas
+        etapas da história.
+      </div>
+
+      <button class="secondary" onclick="showScreen('choose')">
+        Voltar à escolha de personagem
+      </button>
+    </div>
+  </section>
+
+  <!-- 5. CONVERSAS INICIAIS -->
+  <section id="chat" class="screen">
+    <header class="chat-header">
+      <button class="back-button" onclick="backToContacts()" aria-label="Voltar">‹</button>
+      <span class="avatar" id="chatAvatar">🐺</span>
+      <span>
+        <strong id="chatName">Meu Lobinho 🐺❤️</strong>
+        <small>LoveLink</small>
+      </span>
+    </header>
+
+    <div class="messages" id="messages" aria-live="polite"></div>
+
+    <form class="chat-compose" id="messageForm">
+      <input
+        id="messageInput"
+        type="text"
+        maxlength="1000"
+        placeholder="Digite uma mensagem..."
+        autocomplete="off"
+        aria-label="Digite uma mensagem"
+        required
+      >
+      <button class="send-button" type="submit" aria-label="Enviar">➤</button>
+    </form>
+  </section>
+
   <script>
-    const STORAGE_KEY = "lovelink-messages-v1";
+    let currentCharacter = "luana";
+    let currentChat = "partner";
 
-    let currentUser = "";
-    let currentChat = "";
-
-    const characters = {
+    const conversations = {
       luana: {
-        name: "Luana",
-        partner: "Meu Lobinho 🐺❤️",
+        partnerName: "Meu Lobinho 🐺❤️",
         partnerEmoji: "🐺",
-        greeting: "Seu cantinho de carinho está esperando por você 🌷"
+        welcomeEmoji: "🌷",
+        welcomeTitle: "Bem-vinda, Luana! 💗",
+        welcomeText: "Seu cantinho está pronto. Sua história com Richard começa aqui.",
+        greeting: "Oi, minha princesa! ❤️ Como foi seu dia?",
+        groupGreeting: "Bem-vinda ao grupo! Em breve, nossos personagens vão conversar por aqui."
       },
       richard: {
-        name: "Richard",
-        partner: "Minha Princesinha 🌷💕",
+        partnerName: "Minha Princesinha 🌷💕",
         partnerEmoji: "🌷",
-        greeting: "Suas conversas estão esperando por você 🖤"
+        welcomeEmoji: "🐺",
+        welcomeTitle: "Bem-vindo, Richard! 🖤",
+        welcomeText: "Suas conversas estão esperando. Há coisas que você ainda vai descobrir.",
+        greeting: "Oi, meu lobinho! 💗 Estava com saudade de você.",
+        groupGreeting: "Bem-vindo ao grupo! Em breve, nossos personagens vão conversar por aqui."
       }
     };
 
-    let conversations = loadMessages();
-
-    function loadMessages() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        return saved ? JSON.parse(saved) : {};
-      } catch (error) {
-        return {};
-      }
-    }
-
-    function saveMessages() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations));
-      } catch (error) {
-        alert("Não foi possível salvar neste navegador.");
-      }
-    }
-
-    function getConversationKey() {
-      return currentUser + "-" + currentChat;
-    }
-
-    function getConversation() {
-      const key = getConversationKey();
-
-      if (!conversations[key]) {
-        conversations[key] = {
-          messages: [],
-          unread: 0
-        };
-      }
-
-      return conversations[key];
-    }
-
-    function showScreen(screenId) {
+    function showScreen(id) {
       document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
       });
 
-      document.getElementById(screenId).classList.add("active");
+      document.getElementById(id).classList.add("active");
+      window.scrollTo(0, 0);
     }
 
-    function chooseUser(user) {
-      currentUser = user;
-      document.body.classList.toggle("dark", user === "richard");
+    function startGame() {
+      showScreen("choose");
+    }
 
-      document.getElementById("greeting").textContent =
-        "Olá, " + characters[user].name + "! " +
-        characters[user].greeting;
+    function chooseCharacter(character) {
+      currentCharacter = character;
+      document.body.classList.toggle("richard", character === "richard");
 
+      const data = conversations[character];
+
+      document.getElementById("welcomeEmoji").textContent = data.welcomeEmoji;
+      document.getElementById("welcomeTitle").textContent = data.welcomeTitle;
+      document.getElementById("welcomeText").textContent = data.welcomeText;
+
+      document.getElementById("partnerName").textContent = data.partnerName;
+      document.getElementById("partnerAvatar").textContent = data.partnerEmoji;
+
+      showScreen("welcome");
+    }
+
+    function openContacts() {
       showScreen("contacts");
-      renderContacts();
     }
 
-    function switchUser() {
-      currentUser = "";
-      currentChat = "";
-      document.body.classList.remove("dark");
-      showScreen("home");
-    }
+    function openChat(type) {
+      currentChat = type;
 
-    function renderContacts() {
-      const list = document.getElementById("contactList");
-      const partner = characters[currentUser];
-      const key = currentUser + "-" + partner.partner;
+      const data = conversations[currentCharacter];
+      const isGroup = type === "group";
 
-      if (!conversations[key]) {
-        conversations[key] = {
-          messages: [],
-          unread: 0
-        };
-      }
-
-      const data = conversations[key];
-      const lastMessage = data.messages[data.messages.length - 1];
-
-      let preview = "Toque para começar uma conversa 💗";
-
-      if (lastMessage) {
-        preview = (lastMessage.from === currentUser ? "Você: " : "") +
-          lastMessage.text;
-      }
-
-      list.innerHTML = `
-        <div class="contact" onclick="openChat()">
-          <div class="avatar">${partner.partnerEmoji}</div>
-          <div class="contact-info">
-            <div class="contact-name">${partner.partner}</div>
-            <div class="preview">${escapeHTML(preview)}</div>
-          </div>
-          ${data.unread > 0
-            ? `<span class="unread">${data.unread}</span>`
-            : ""}
-        </div>
-      `;
-
-      saveMessages();
-    }
-
-    function openChat() {
-      currentChat = characters[currentUser].partner;
-
-      const data = getConversation();
-      data.unread = 0;
-      saveMessages();
+      document.getElementById("chatName").textContent =
+        isGroup ? "Nosso grupo 👥" : data.partnerName;
 
       document.getElementById("chatAvatar").textContent =
-        characters[currentUser].partnerEmoji;
+        isGroup ? "👥" : data.partnerEmoji;
 
-      document.getElementById("chatName").textContent = currentChat;
+      document.getElementById("messages").innerHTML = "";
 
-      renderMessages();
+      addMessage(
+        isGroup ? data.groupGreeting : data.greeting,
+        false
+      );
+
+      if (!isGroup && currentCharacter === "richard") {
+        addMessage(
+          "Richard, fica atento: a investigação e as mensagens do perseguidor serão desenvolvidas nos próximos capítulos.",
+          false
+        );
+      }
+
       showScreen("chat");
     }
 
-    function renderMessages() {
-      const box = document.getElementById("messages");
-      const data = getConversation();
+    function addMessage(text, mine) {
+      const messages = document.getElementById("messages");
+      const bubble = document.createElement("div");
 
-      box.innerHTML = '<div class="date-label">Suas mensagens 💕</div>';
+      bubble.className = "message " + (mine ? "me" : "them");
 
-      if (data.messages.length === 0) {
-        box.innerHTML += `
-          <div class="empty">
-            Essa conversa está começando agora. 💌<br>
-            Envie a primeira mensagem!
-          </div>
-        `;
-      }
+      const content = document.createElement("span");
+      content.textContent = text;
+      bubble.appendChild(content);
 
-      data.messages.forEach(message => {
-        const bubble = document.createElement("div");
-        bubble.className =
-          "message " + (message.from === currentUser ? "mine" : "theirs");
-
-        bubble.textContent = message.text;
-
-        const time = document.createElement("span");
-        time.className = "time";
-        time.textContent = message.time;
-
-        bubble.appendChild(time);
-        box.appendChild(bubble);
+      const time = document.createElement("time");
+      time.textContent = new Date().toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit"
       });
+      bubble.appendChild(time);
 
-      box.scrollTop = box.scrollHeight;
+      messages.appendChild(bubble);
+      messages.scrollTop = messages.scrollHeight;
     }
 
-    document.getElementById("messageForm").addEventListener("submit", event => {
+    function backToContacts() {
+      showScreen("contacts");
+    }
+
+    document.getElementById("messageForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
       const input = document.getElementById("messageInput");
       const text = input.value.trim();
 
-      if (!text || !currentUser || !currentChat) return;
+      if (!text) return;
 
-      const data = getConversation();
-
-      data.messages.push({
-        from: currentUser,
-        text: text,
-        time: new Date().toLocaleTimeString("pt-BR", {
-          hour: "2-digit",
-          minute: "2-digit"
-        })
-      });
-
-      saveMessages();
+      addMessage(text, true);
       input.value = "";
 
-      renderMessages();
-      renderContacts();
-      input.focus();
+      // Esta versão ainda não tem um serviço de IA conectado.
+      // As respostas automáticas contextuais serão adicionadas numa etapa futura.
     });
-
-    function openGroups() {
-      showScreen("groups");
-    }
-
-    function escapeHTML(text) {
-      const element = document.createElement("span");
-      element.textContent = text;
-      return element.innerHTML;
-    }
   </script>
 </body>
-      </html>
-          
+  </html>
+  
