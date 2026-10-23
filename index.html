@@ -316,14 +316,14 @@
       border-bottom-right-radius: 5px;
     }
 
-    /* CORES DAS MENSAGENS: CADA PERSONAGEM TEM A SUA */
-
+    /* LUANA SEMPRE ROSA */
     .message.luana {
       color: #350719;
       background: #ff78ad;
       border: 1px solid #ff4f91;
     }
 
+    /* RICHARD SEMPRE CINZA-ESCURO */
     .message.richard {
       color: #f5f5f5;
       background: #292929;
@@ -402,7 +402,10 @@
   <section id="choose" class="screen">
     <div class="choice-content">
       <h1 class="logo">LoveLink</h1>
-      <p class="subtitle">Duas perspectivas.<br>Uma história cheia de segredos.</p>
+      <p class="subtitle">
+        Duas perspectivas.<br>
+        Uma história cheia de segredos.
+      </p>
 
       <button class="character-card" onclick="chooseCharacter('luana')">
         <span class="character-emoji">🌷</span>
@@ -506,7 +509,7 @@
     </form>
   </section>
 
-  <!-- MÚSICA: TOCA UMA VEZ, SEM LOOP -->
+  <!-- MÚSICA SEM REPETIÇÃO AUTOMÁTICA -->
   <audio
     id="introMusic"
     src="https://luanadjenifer009-pixel.github.io/LoveLink/dkfilms-romantic-piano-action-orchestral-ambience-383325.mp3"
@@ -516,6 +519,9 @@
   <script>
     let currentCharacter = "luana";
     let currentChat = "partner";
+
+    /* EVITA PEDIR PARA TOCAR A MÚSICA MAIS DE UMA VEZ */
+    let musicStarted = false;
 
     const conversations = {
       luana: {
@@ -548,14 +554,19 @@
       window.scrollTo(0, 0);
     }
 
-    /* INICIAR O JOGO E TOCAR A MÚSICA */
+    /* INICIA A MÚSICA UMA ÚNICA VEZ POR SESSÃO */
     function startGame() {
       const music = document.getElementById("introMusic");
-      music.volume = 0.35;
 
-      music.play().catch(error => {
-        console.error("Não foi possível iniciar a música:", error);
-      });
+      if (!musicStarted) {
+        musicStarted = true;
+        music.volume = 0.35;
+
+        music.play().catch(error => {
+          musicStarted = false;
+          console.error("Não foi possível iniciar a música:", error);
+        });
+      }
 
       showScreen("choose");
     }
@@ -603,15 +614,15 @@
       const bubble = document.createElement("div");
 
       /*
-        A cor depende de quem enviou a mensagem:
-        Luana = rosa
-        Richard = cinza-escuro
+        Luana = rosa.
+        Richard = cinza-escuro.
       */
       const sender = mine
         ? currentCharacter
         : (currentCharacter === "luana" ? "richard" : "luana");
 
-      bubble.className = "message " + (mine ? "me" : "them") + " " + sender;
+      bubble.className =
+        "message " + (mine ? "me" : "them") + " " + sender;
 
       const content = document.createElement("span");
       content.textContent = text;
@@ -646,4 +657,4 @@
     });
   </script>
 </body>
-        </html>
+  </html>
