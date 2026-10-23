@@ -195,7 +195,10 @@
       border: 1px solid #684355;
     }
 
-    #contacts { flex-direction: column; background: var(--bg); }
+    #contacts {
+      flex-direction: column;
+      background: var(--bg);
+    }
 
     .topbar {
       padding: 22px 20px;
@@ -305,22 +308,33 @@
 
     .message.them {
       align-self: flex-start;
-      background: var(--bubble);
       border-bottom-left-radius: 5px;
     }
 
     .message.me {
       align-self: flex-end;
-      color: #240b16;
-      background: var(--accent);
       border-bottom-right-radius: 5px;
+    }
+
+    /* CORES DAS MENSAGENS: CADA PERSONAGEM TEM A SUA */
+
+    .message.luana {
+      color: #350719;
+      background: #ff78ad;
+      border: 1px solid #ff4f91;
+    }
+
+    .message.richard {
+      color: #f5f5f5;
+      background: #292929;
+      border: 1px solid #505050;
     }
 
     .message time {
       display: block;
       margin-top: 5px;
       font-size: 10px;
-      opacity: .7;
+      opacity: .75;
       text-align: right;
     }
 
@@ -406,7 +420,9 @@
         </span>
       </button>
 
-      <button class="secondary" onclick="showScreen('intro')">Voltar à capa</button>
+      <button class="secondary" onclick="showScreen('intro')">
+        Voltar à capa
+      </button>
     </div>
   </section>
 
@@ -490,11 +506,10 @@
     </form>
   </section>
 
-  <!-- MÚSICA -->
+  <!-- MÚSICA: TOCA UMA VEZ, SEM LOOP -->
   <audio
     id="introMusic"
     src="https://luanadjenifer009-pixel.github.io/LoveLink/dkfilms-romantic-piano-action-orchestral-ambience-383325.mp3"
-    loop
     preload="auto">
   </audio>
 
@@ -538,13 +553,9 @@
       const music = document.getElementById("introMusic");
       music.volume = 0.35;
 
-      music.play()
-        .then(() => {
-          console.log("Música do LoveLink iniciada!");
-        })
-        .catch(error => {
-          console.error("Erro ao tocar a música:", error);
-        });
+      music.play().catch(error => {
+        console.error("Não foi possível iniciar a música:", error);
+      });
 
       showScreen("choose");
     }
@@ -570,6 +581,7 @@
 
     function openChat(type) {
       currentChat = type;
+
       const data = conversations[currentCharacter];
       const isGroup = type === "group";
 
@@ -590,7 +602,16 @@
       const messages = document.getElementById("messages");
       const bubble = document.createElement("div");
 
-      bubble.className = "message " + (mine ? "me" : "them");
+      /*
+        A cor depende de quem enviou a mensagem:
+        Luana = rosa
+        Richard = cinza-escuro
+      */
+      const sender = mine
+        ? currentCharacter
+        : (currentCharacter === "luana" ? "richard" : "luana");
+
+      bubble.className = "message " + (mine ? "me" : "them") + " " + sender;
 
       const content = document.createElement("span");
       content.textContent = text;
@@ -621,7 +642,8 @@
 
       addMessage(text, true);
       input.value = "";
+      input.focus();
     });
   </script>
 </body>
-  </html>
+        </html>
