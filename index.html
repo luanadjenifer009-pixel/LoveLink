@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -42,7 +41,7 @@
     .screen { display: none; min-height: 100vh; }
     .screen.active { display: flex; }
 
-    /* CAPA: imagem inteira, sem cortar */
+    /* CAPA */
     #intro {
       min-height: 100vh;
       min-height: 100dvh;
@@ -177,7 +176,10 @@
       border-radius: 24px;
     }
 
-    .welcome-icon { font-size: 60px; margin-bottom: 12px; }
+    .welcome-icon {
+      font-size: 60px;
+      margin-bottom: 12px;
+    }
 
     .primary, .secondary {
       width: 100%;
@@ -200,7 +202,10 @@
     }
 
     /* CONTATOS */
-    #contacts { flex-direction: column; background: var(--bg); }
+    #contacts {
+      flex-direction: column;
+      background: var(--bg);
+    }
 
     .topbar {
       padding: 22px 20px;
@@ -208,8 +213,15 @@
       border-bottom: 1px solid #34212d;
     }
 
-    .topbar h1 { margin: 0 0 7px; font-size: 28px; }
-    .topbar p { margin: 0; color: var(--muted); }
+    .topbar h1 {
+      margin: 0 0 7px;
+      font-size: 28px;
+    }
+
+    .topbar p {
+      margin: 0;
+      color: var(--muted);
+    }
 
     .contact-list { padding: 10px 14px; }
 
@@ -234,7 +246,11 @@
       text-align: left;
     }
 
-    .contact-info { flex: 1; min-width: 0; }
+    .contact-info {
+      flex: 1;
+      min-width: 0;
+    }
+
     .contact-info small {
       display: block;
       color: var(--muted);
@@ -393,7 +409,10 @@
   <section id="choose" class="screen">
     <div class="choice-content">
       <h1 class="logo">LoveLink</h1>
-      <p class="subtitle">Duas perspectivas.<br>Uma história cheia de segredos.</p>
+      <p class="subtitle">
+        Duas perspectivas.<br>
+        Uma história cheia de segredos.
+      </p>
 
       <button class="character-card" onclick="chooseCharacter('luana')">
         <span class="character-emoji">🌷</span>
@@ -411,7 +430,9 @@
         </span>
       </button>
 
-      <button class="secondary" onclick="showScreen('intro')">Voltar à capa</button>
+      <button class="secondary" onclick="showScreen('intro')">
+        Voltar à capa
+      </button>
     </div>
   </section>
 
@@ -421,8 +442,14 @@
       <div class="welcome-icon" id="welcomeEmoji">🌷</div>
       <h1 id="welcomeTitle">Bem-vinda ao LoveLink!</h1>
       <p class="subtitle" id="welcomeText"></p>
-      <button class="primary" onclick="openContacts()">Entrar no LoveLink 💌</button>
-      <button class="secondary" onclick="showScreen('choose')">Trocar personagem</button>
+
+      <button class="primary" onclick="openContacts()">
+        Entrar no LoveLink 💌
+      </button>
+
+      <button class="secondary" onclick="showScreen('choose')">
+        Trocar personagem
+      </button>
     </div>
   </section>
 
@@ -438,11 +465,13 @@
 
       <button class="contact" onclick="openChat('partner')">
         <span class="avatar" id="partnerAvatar">🐺</span>
+
         <span class="contact-info">
           <strong id="partnerName">Meu Lobinho 🐺❤️</strong>
           <small id="partnerPreview">Toque para abrir a conversa 💗</small>
           <span class="badge">Conversa especial</span>
         </span>
+
         <span>›</span>
       </button>
 
@@ -450,10 +479,12 @@
 
       <button class="contact" onclick="openChat('group')">
         <span class="avatar">👥</span>
+
         <span class="contact-info">
           <strong>Nosso grupo</strong>
           <small>Um espaço para os personagens</small>
         </span>
+
         <span>›</span>
       </button>
 
@@ -471,8 +502,14 @@
   <!-- 5. CONVERSA -->
   <section id="chat" class="screen">
     <header class="chat-header">
-      <button class="back-button" onclick="backToContacts()" aria-label="Voltar">‹</button>
+      <button
+        class="back-button"
+        onclick="backToContacts()"
+        aria-label="Voltar"
+      >‹</button>
+
       <span class="avatar" id="chatAvatar">🐺</span>
+
       <span>
         <strong id="chatName">Meu Lobinho 🐺❤️</strong>
         <small>LoveLink</small>
@@ -491,9 +528,20 @@
         aria-label="Digite uma mensagem"
         required
       >
-      <button class="send-button" type="submit" aria-label="Enviar">➤</button>
+
+      <button class="send-button" type="submit" aria-label="Enviar">
+        ➤
+      </button>
     </form>
   </section>
+
+  <!-- MÚSICA: arquivo MP3 na mesma pasta do index.html -->
+  <audio
+    id="introMusic"
+    src="./dkfilms-romantic-piano-action-orchestral-ambience-383325.mp3"
+    loop
+    preload="auto">
+  </audio>
 
   <script>
     let currentCharacter = "luana";
@@ -509,6 +557,7 @@
         greeting: "Oi, minha princesa! ❤️ Como foi seu dia?",
         groupGreeting: "Bem-vinda ao grupo! Em breve, nossos personagens vão conversar por aqui."
       },
+
       richard: {
         partnerName: "Minha Princesinha 🌷💕",
         partnerEmoji: "🌷",
@@ -524,24 +573,47 @@
       document.querySelectorAll(".screen").forEach(screen => {
         screen.classList.remove("active");
       });
+
       document.getElementById(id).classList.add("active");
       window.scrollTo(0, 0);
     }
 
+    /* MÚSICA: começa ao tocar em INICIAR JOGO */
     function startGame() {
+      const music = document.getElementById("introMusic");
+      music.volume = 0.35;
+
+      music.play().catch(error => {
+        console.log("Não foi possível iniciar a música:", error);
+      });
+
       showScreen("choose");
     }
 
     function chooseCharacter(character) {
       currentCharacter = character;
-      document.body.classList.toggle("richard", character === "richard");
+
+      document.body.classList.toggle(
+        "richard",
+        character === "richard"
+      );
 
       const data = conversations[character];
-      document.getElementById("welcomeEmoji").textContent = data.welcomeEmoji;
-      document.getElementById("welcomeTitle").textContent = data.welcomeTitle;
-      document.getElementById("welcomeText").textContent = data.welcomeText;
-      document.getElementById("partnerName").textContent = data.partnerName;
-      document.getElementById("partnerAvatar").textContent = data.partnerEmoji;
+
+      document.getElementById("welcomeEmoji").textContent =
+        data.welcomeEmoji;
+
+      document.getElementById("welcomeTitle").textContent =
+        data.welcomeTitle;
+
+      document.getElementById("welcomeText").textContent =
+        data.welcomeText;
+
+      document.getElementById("partnerName").textContent =
+        data.partnerName;
+
+      document.getElementById("partnerAvatar").textContent =
+        data.partnerEmoji;
 
       showScreen("welcome");
     }
@@ -552,16 +624,22 @@
 
     function openChat(type) {
       currentChat = type;
+
       const data = conversations[currentCharacter];
       const isGroup = type === "group";
 
       document.getElementById("chatName").textContent =
         isGroup ? "Nosso grupo 👥" : data.partnerName;
+
       document.getElementById("chatAvatar").textContent =
         isGroup ? "👥" : data.partnerEmoji;
 
       document.getElementById("messages").replaceChildren();
-      addMessage(isGroup ? data.groupGreeting : data.greeting, false);
+
+      addMessage(
+        isGroup ? data.groupGreeting : data.greeting,
+        false
+      );
 
       showScreen("chat");
     }
@@ -569,6 +647,7 @@
     function addMessage(text, mine) {
       const messages = document.getElementById("messages");
       const bubble = document.createElement("div");
+
       bubble.className = "message " + (mine ? "me" : "them");
 
       const content = document.createElement("span");
@@ -576,12 +655,13 @@
       bubble.appendChild(content);
 
       const time = document.createElement("time");
+
       time.textContent = new Date().toLocaleTimeString("pt-BR", {
         hour: "2-digit",
         minute: "2-digit"
       });
-      bubble.appendChild(time);
 
+      bubble.appendChild(time);
       messages.appendChild(bubble);
       messages.scrollTop = messages.scrollHeight;
     }
@@ -590,16 +670,19 @@
       showScreen("contacts");
     }
 
-    document.getElementById("messageForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      const input = document.getElementById("messageInput");
-      const text = input.value.trim();
-      if (!text) return;
+    document
+      .getElementById("messageForm")
+      .addEventListener("submit", function(event) {
+        event.preventDefault();
 
-      addMessage(text, true);
-      input.value = "";
-    });
+        const input = document.getElementById("messageInput");
+        const text = input.value.trim();
+
+        if (!text) return;
+
+        addMessage(text, true);
+        input.value = "";
+      });
   </script>
 </body>
   </html>
-  
